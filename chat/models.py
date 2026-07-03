@@ -1,3 +1,12 @@
+from django.db import connection
+
+def ensure_column_exists():
+    with connection.cursor() as cursor:
+        cursor.execute("PRAGMA table_info(chat_message)")
+        columns = [col[1] for col in cursor.fetchall()]
+        if 'is_deleted' not in columns:
+            cursor.execute("ALTER TABLE chat_message ADD COLUMN is_deleted BOOLEAN DEFAULT 0")
+
 from django.db import models
 from django.contrib.auth.models import User
 
