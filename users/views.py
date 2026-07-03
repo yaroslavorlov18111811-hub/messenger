@@ -2,7 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
+from django.http import HttpResponse
 
+@csrf_protect
+@ensure_csrf_cookie
 def register_page(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -23,6 +27,8 @@ def register_page(request):
     
     return render(request, 'users/register.html')
 
+@csrf_protect
+@ensure_csrf_cookie
 def login_page(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -39,4 +45,4 @@ def login_page(request):
 
 def logout_page(request):
     logout(request)
-    return redirect('login')  # ← ИСПРАВЛЕНО!
+    return redirect('login')
