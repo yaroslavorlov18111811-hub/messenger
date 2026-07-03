@@ -118,6 +118,7 @@
             align-items: center;
             gap: 14px;
             color: rgba(255,255,255,0.5);
+            position: relative;
         }
         .user-item:hover {
             background: rgba(255,255,255,0.05);
@@ -143,6 +144,23 @@
             opacity: 0.7;
         }
         .user-item strong { font-weight: 400; font-size: 14px; }
+
+        /* 🔴 КРАСНАЯ ТОЧКА */
+        .unread-dot {
+            width: 12px;
+            height: 12px;
+            background: #ff3b30;
+            border-radius: 50%;
+            margin-left: auto;
+            flex-shrink: 0;
+            animation: pulse-dot 1.5s infinite;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+        @keyframes pulse-dot {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
 
         .chat-messages {
             height: 420px;
@@ -374,10 +392,13 @@
                 <div class="card-glass">
                     <div class="card-header">Контакты</div>
                     <div class="user-list" id="user-list">
-                        {% for other_user in users %}
-                            <div class="user-item" onclick="openChat({{ other_user.id }}, '{{ other_user.username }}')">
-                                <div class="user-avatar">{{ other_user.username|first|upper }}</div>
-                                <strong>{{ other_user.username }}</strong>
+                        {% for item in users_with_unread %}
+                            <div class="user-item" onclick="openChat({{ item.user.id }}, '{{ item.user.username }}')">
+                                <div class="user-avatar">{{ item.user.username|first|upper }}</div>
+                                <strong>{{ item.user.username }}</strong>
+                                {% if item.unread > 0 %}
+                                    <span class="unread-dot"></span>
+                                {% endif %}
                             </div>
                         {% empty %}
                             <div class="empty-text">Нет других пользователей</div>
@@ -415,7 +436,6 @@
         let isMobile = window.innerWidth <= 768;
 
         function openChat(userId, username) {
-            // Полностью очищаем контейнер перед открытием нового чата
             const container = document.getElementById('chat-messages');
             container.innerHTML = '';
             
@@ -433,7 +453,6 @@
                 }
             }
 
-            // Сбрасываем кеш, чтобы принудительно загрузить свежие сообщения
             messageCache[userId] = null;
 
             if (isMobile) {
@@ -448,7 +467,6 @@
         }
 
         function loadMessages(userId) {
-            // Защита от дурака: если сменился чат — ничего не делаем
             if (selectedUserId !== userId) return;
 
             fetch('/get_messages/' + userId + '/')
@@ -456,7 +474,6 @@
                 .then(messages => {
                     const container = document.getElementById('chat-messages');
                     
-                    // Проверяем, что чат не переключили во время запроса
                     if (selectedUserId !== userId) {
                         container.innerHTML = '';
                         return;
@@ -478,6 +495,12 @@
                         container.appendChild(div);
                     });
                     container.scrollTop = container.scrollHeight;
+
+                    // Убираем точку после прочтения
+                    document.querySelectorAll('.user-item').forEach(el => {
+                        const dot = el.querySelector('.unread-dot');
+                        if (dot) dot.remove();
+                    });
                 })
                 .catch(error => {
                     console.error('Ошибка загрузки:', error);

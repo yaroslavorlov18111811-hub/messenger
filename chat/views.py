@@ -7,23 +7,42 @@ from .models import Message
 @login_required
 def chat_page(request):
     users = User.objects.exclude(id=request.user.id)
-    return render(request, 'chat/chat.html', {'users': users})
+    users_with_unread = []
+    for user in users:
+        unread_count = Message.objects.filter(
+            sender=user,
+            receiver=request.user,
+            is_read=False
+        ).count()
+        users_with_unread.append({
+            'user': user,
+            'unread': unread_count
+        })
+    return render(request, 'chat/chat.html', {'users_with_unread': users_with_unread})
 
 @login_required
 def get_messages(request, user_id):
     try:
         receiver = User.objects.get(id=user_id)
+        
+        # Помечаем все сообщения от этого пользователя как прочитанные
+        Message.objects.filter(
+            sender=receiver,
+            receiver=request.user,
+            is_read=False
+        ).update(is_read=True)
+
         messages = Message.objects.filter(
             sender__in=[request.user, receiver],
             receiver__in=[request.user, receiver]
         ).order_by('timestamp')
-        
+
         messages_data = [{
             'sender': msg.sender.id,
             'content': msg.content,
             'timestamp': msg.timestamp.strftime('%H:%M'),
         } for msg in messages]
-        
+
         return JsonResponse(messages_data, safe=False)
     except User.DoesNotExist:
         return JsonResponse({'error': 'User not found'}, status=404)
@@ -39,7 +58,8 @@ def send_message(request):
             message = Message.objects.create(
                 sender=request.user,
                 receiver=receiver,
-                content=content
+                content=content,
+                is_read=False
             )
             return JsonResponse({'status': 'ok'})
         except User.DoesNotExist:
