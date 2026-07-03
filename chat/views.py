@@ -33,11 +33,11 @@ def get_messages(request, user_id):
             is_read=False
         ).update(is_read=True)
 
-        # Показываем только НЕ УДАЛЁННЫЕ сообщения
+        # Показываем ТОЛЬКО НЕ УДАЛЁННЫЕ сообщения
         messages = Message.objects.filter(
             sender__in=[request.user, receiver],
             receiver__in=[request.user, receiver],
-            is_deleted=False
+            is_deleted=False  # ← ЭТО ВАЖНО!
         ).order_by('timestamp')
 
         messages_data = [{
@@ -75,10 +75,8 @@ def send_message(request):
 def delete_message(request, message_id):
     try:
         message = Message.objects.get(id=message_id)
-        # Проверяем, что это сообщение принадлежит текущему пользователю
         if message.sender != request.user:
             return JsonResponse({'error': 'Нельзя удалить чужое сообщение'}, status=403)
-        # Мягкое удаление — просто скрываем
         message.is_deleted = True
         message.save()
         return JsonResponse({'status': 'ok'})
