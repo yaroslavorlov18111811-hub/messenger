@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Мессенджер</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -19,12 +19,10 @@
         .bubble {
             position: absolute;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.04);
             animation: float 4s infinite ease-in-out;
             pointer-events: none;
-            will-change: transform;
         }
-
         .bubble:nth-child(1) { width: 120px; height: 120px; left: 5%; top: 10%; animation-delay: 0s; }
         .bubble:nth-child(2) { width: 180px; height: 180px; right: 8%; top: 5%; animation-delay: 0.5s; }
         .bubble:nth-child(3) { width: 80px; height: 80px; left: 20%; bottom: 20%; animation-delay: 1s; }
@@ -35,11 +33,11 @@
         .bubble:nth-child(8) { width: 70px; height: 70px; left: 55%; bottom: 10%; animation-delay: 1.7s; }
 
         @keyframes float {
-            0% { transform: translate(0, 0) scale(1); opacity: 0.3; }
-            25% { transform: translate(40px, -30px) scale(1.1); opacity: 0.5; }
-            50% { transform: translate(-20px, 25px) scale(0.9); opacity: 0.2; }
-            75% { transform: translate(30px, -15px) scale(1.05); opacity: 0.4; }
-            100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+            0% { transform: translate(0,0) scale(1); opacity: 0.3; }
+            25% { transform: translate(40px,-30px) scale(1.1); opacity: 0.5; }
+            50% { transform: translate(-20px,25px) scale(0.9); opacity: 0.2; }
+            75% { transform: translate(30px,-15px) scale(1.05); opacity: 0.4; }
+            100% { transform: translate(0,0) scale(1); opacity: 0.3; }
         }
 
         .chat-container {
@@ -51,11 +49,11 @@
             height: calc(100vh - 40px);
         }
 
-        /* Верхняя панель - ПРОЗРАЧНАЯ как карточка с контактами */
+        /* Верхняя панель */
         .top-bar {
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(255,255,255,0.06);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255,255,255,0.06);
             border-radius: 12px;
             padding: 14px 24px;
             margin-bottom: 20px;
@@ -63,34 +61,14 @@
             justify-content: space-between;
             align-items: center;
         }
-
-        .top-bar .brand {
-            font-size: 16px;
-            font-weight: 400;
-            color: rgba(255, 255, 255, 0.7);
-            letter-spacing: 0.5px;
-        }
-
-        .top-bar .brand span {
-            color: #BF341F;
-            font-weight: 600;
-        }
-
-        .top-bar .user-info {
-            color: rgba(255, 255, 255, 0.5);
-            font-weight: 300;
-            font-size: 13px;
-        }
-
-        .top-bar .user-info strong {
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 400;
-        }
-
+        .top-bar .brand { font-size: 16px; font-weight: 400; color: rgba(255,255,255,0.7); letter-spacing: 0.5px; }
+        .top-bar .brand span { color: #BF341F; font-weight: 600; }
+        .top-bar .user-info { color: rgba(255,255,255,0.5); font-weight: 300; font-size: 13px; }
+        .top-bar .user-info strong { color: rgba(255,255,255,0.8); font-weight: 400; }
         .top-bar .btn-logout {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: rgba(255, 255, 255, 0.5);
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.5);
             border-radius: 8px;
             padding: 5px 16px;
             transition: all 0.2s ease;
@@ -99,30 +77,28 @@
             text-decoration: none;
             letter-spacing: 0.3px;
         }
-
         .top-bar .btn-logout:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.8);
-            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.8);
+            border-color: rgba(255,255,255,0.15);
         }
 
         /* Карточки */
         .card-glass {
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(255,255,255,0.06);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255,255,255,0.06);
             border-radius: 12px;
             overflow: hidden;
             height: 100%;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
-
         .card-glass .card-header {
-            background: rgba(0, 0, 0, 0.2);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            background: rgba(0,0,0,0.2);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
             padding: 12px 20px;
             font-weight: 400;
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255,255,255,0.4);
             font-size: 11px;
             letter-spacing: 0.5px;
             text-transform: uppercase;
@@ -133,40 +109,29 @@
             overflow-y: auto;
             padding: 0;
         }
-
-        .user-list::-webkit-scrollbar {
-            width: 4px;
-        }
-        .user-list::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.03);
-        }
-        .user-list::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 4px;
-        }
+        .user-list::-webkit-scrollbar { width: 4px; }
+        .user-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); }
+        .user-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
 
         .user-item {
             padding: 12px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
             cursor: pointer;
             transition: all 0.15s ease;
             display: flex;
             align-items: center;
             gap: 14px;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255,255,255,0.5);
         }
-
         .user-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: rgba(255, 255, 255, 0.8);
+            background: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.8);
         }
-
         .user-item.active-user {
-            background: rgba(191, 52, 31, 0.25);
+            background: rgba(191,52,31,0.25);
             border-left: 3px solid #BF341F;
             color: #ffffff;
         }
-
         .user-avatar {
             width: 34px;
             height: 34px;
@@ -175,35 +140,23 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #ffffff;
+            color: #fff;
             font-weight: 500;
             font-size: 13px;
             flex-shrink: 0;
             opacity: 0.7;
         }
-
-        .user-item strong {
-            font-weight: 400;
-            font-size: 14px;
-        }
+        .user-item strong { font-weight: 400; font-size: 14px; }
 
         .chat-messages {
             height: 420px;
             overflow-y: auto;
             padding: 20px;
-            background: rgba(0, 0, 0, 0.15);
+            background: rgba(0,0,0,0.15);
         }
-
-        .chat-messages::-webkit-scrollbar {
-            width: 4px;
-        }
-        .chat-messages::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.03);
-        }
-        .chat-messages::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.12);
-            border-radius: 4px;
-        }
+        .chat-messages::-webkit-scrollbar { width: 4px; }
+        .chat-messages::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); }
+        .chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 4px; }
 
         .message {
             margin-bottom: 8px;
@@ -213,21 +166,24 @@
             word-wrap: break-word;
             font-size: 14px;
             line-height: 1.5;
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            animation: messageIn 0.25s ease forwards;
         }
-
+        @keyframes messageIn {
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
         .message.sent {
             background: #BF341F;
-            color: #ffffff;
+            color: #fff;
             margin-left: auto;
             border-bottom-right-radius: 2px;
         }
-
         .message.received {
-            background: rgba(255, 255, 255, 0.08);
-            color: rgba(255, 255, 255, 0.85);
+            background: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.85);
             border-bottom-left-radius: 2px;
         }
-
         .message .time {
             font-size: 10px;
             opacity: 0.35;
@@ -242,106 +198,178 @@
             align-items: center;
             justify-content: center;
             height: 100%;
-            color: rgba(255, 255, 255, 0.15);
+            color: rgba(255,255,255,0.15);
             font-size: 13px;
             letter-spacing: 0.5px;
         }
-
-        .empty-state .icon {
-            font-size: 36px;
-            margin-bottom: 10px;
-            opacity: 0.3;
-        }
+        .empty-state .icon { font-size: 36px; margin-bottom: 10px; opacity: 0.3; }
 
         .card-footer {
-            background: rgba(0, 0, 0, 0.2);
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            background: rgba(0,0,0,0.2);
+            border-top: 1px solid rgba(255,255,255,0.04);
             padding: 12px 20px;
         }
-
         .input-group-custom {
             display: flex;
             gap: 10px;
         }
-
         .input-group-custom input {
             flex: 1;
             border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255,255,255,0.06);
             padding: 10px 16px;
             font-size: 13px;
             transition: all 0.15s ease;
-            background: rgba(255, 255, 255, 0.05);
-            color: rgba(255, 255, 255, 0.8);
+            background: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.8);
             outline: none;
         }
-
-        .input-group-custom input::placeholder {
-            color: rgba(255, 255, 255, 0.2);
-        }
-
+        .input-group-custom input::placeholder { color: rgba(255,255,255,0.2); }
         .input-group-custom input:focus {
             border-color: #BF341F;
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255,255,255,0.08);
         }
-
-        .input-group-custom input:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
+        .input-group-custom input:disabled { opacity: 0.3; cursor: not-allowed; }
 
         .btn-send {
             background: #BF341F;
             border: none;
             border-radius: 8px;
             padding: 10px 24px;
-            color: #ffffff;
+            color: #fff;
             font-weight: 400;
             font-size: 13px;
             transition: all 0.15s ease;
             white-space: nowrap;
             letter-spacing: 0.3px;
+            cursor: pointer;
         }
-
-        .btn-send:hover:not(:disabled) {
-            background: #a82d1b;
-            transform: scale(1.02);
-        }
-
-        .btn-send:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .btn-send:active { transform: scale(0.94); }
+        .btn-send:hover:not(:disabled) { background: #a82d1b; transform: scale(1.02); }
+        .btn-send:disabled { opacity: 0.3; cursor: not-allowed; }
 
         .user-list .empty-text {
             padding: 30px;
             text-align: center;
-            color: rgba(255, 255, 255, 0.15);
+            color: rgba(255,255,255,0.15);
             font-size: 13px;
         }
 
+        /* Адаптив — мобильная версия как Telegram */
+        .mobile-back {
+            display: none;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.6);
+            font-size: 22px;
+            cursor: pointer;
+            padding: 0 8px;
+            transition: 0.2s;
+        }
+        .mobile-back:active { transform: scale(0.9); }
+
         @media (max-width: 768px) {
-            .chat-container { height: calc(100vh - 20px); margin: 10px auto; padding: 0 10px; }
-            .user-list { height: 200px; }
-            .chat-messages { height: 280px; }
+            .chat-container { margin: 10px auto; padding: 0 10px; height: calc(100vh - 20px); }
             .top-bar { padding: 10px 16px; flex-wrap: wrap; gap: 8px; }
             .top-bar .brand { font-size: 14px; }
+
+            /* Скрываем/показываем блоки */
+            .contacts-view {
+                display: block;
+                height: 100%;
+            }
+            .chat-view {
+                display: none;
+                height: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 999;
+                background: linear-gradient(135deg, #1a1a2e 0%, #BF341F 100%);
+                padding: 10px;
+                animation: slideUp 0.3s ease;
+            }
+            .chat-view.active {
+                display: flex;
+                flex-direction: column;
+            }
+            @keyframes slideUp {
+                from { transform: translateY(30px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+
+            .mobile-back {
+                display: block;
+            }
+            .user-list {
+                height: 60vh;
+            }
+            .chat-messages {
+                height: 55vh;
+            }
+            .card-glass .card-header {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 14px;
+                text-transform: none;
+                color: rgba(255,255,255,0.7);
+            }
+            .message {
+                max-width: 85%;
+                font-size: 15px;
+                padding: 12px 16px;
+            }
+            .btn-send {
+                padding: 12px 20px;
+                font-size: 15px;
+            }
+            .input-group-custom input {
+                font-size: 15px;
+                padding: 12px 16px;
+            }
+            .top-bar .user-info { font-size: 12px; }
+        }
+
+        /* Планшеты */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .user-list { height: 400px; }
+            .chat-messages { height: 350px; }
+        }
+
+        /* Десктоп — всё как раньше */
+        @media (min-width: 1025px) {
+            .chat-view {
+                display: block !important;
+                position: static !important;
+                background: transparent !important;
+                padding: 0 !important;
+                animation: none !important;
+            }
+            .contacts-view {
+                display: block !important;
+            }
+            .mobile-back {
+                display: none !important;
+            }
+            .row {
+                display: flex !important;
+            }
+            .col-md-4, .col-md-8 {
+                display: block !important;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
+    <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+    <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+    <div class="bubble"></div><div class="bubble"></div>
 
     <div class="chat-container">
-        <!-- Верхняя панель - ПРОЗРАЧНАЯ -->
+        <!-- Верхняя панель -->
         <div class="top-bar">
             <span class="brand"><span>●</span> Мессенджер</span>
             <div style="display: flex; align-items: center; gap: 16px;">
@@ -351,12 +379,13 @@
         </div>
 
         <div class="row" style="height: calc(100% - 80px);">
-            <div class="col-md-4" style="height: 100%;">
+            <!-- ===== СПИСОК КОНТАКТОВ ===== -->
+            <div class="col-md-4 contacts-view" style="height: 100%;">
                 <div class="card-glass">
                     <div class="card-header">Контакты</div>
                     <div class="user-list" id="user-list">
                         {% for other_user in users %}
-                            <div class="user-item" onclick="selectUser({{ other_user.id }}, '{{ other_user.username }}')">
+                            <div class="user-item" onclick="openChat({{ other_user.id }}, '{{ other_user.username }}')">
                                 <div class="user-avatar">{{ other_user.username|first|upper }}</div>
                                 <strong>{{ other_user.username }}</strong>
                             </div>
@@ -367,9 +396,13 @@
                 </div>
             </div>
 
-            <div class="col-md-8" style="height: 100%;">
+            <!-- ===== ЧАТ ===== -->
+            <div class="col-md-8 chat-view" id="chatView" style="height: 100%;">
                 <div class="card-glass d-flex flex-column" style="height: 100%;">
-                    <div class="card-header" id="chat-header">Выберите контакт</div>
+                    <div class="card-header">
+                        <button class="mobile-back" id="backBtn" onclick="closeChat()">‹</button>
+                        <span id="chat-header">Выберите контакт</span>
+                    </div>
                     <div class="chat-messages flex-grow-1" id="chat-messages">
                         <div class="empty-state">
                             <div class="icon">⌨️</div>
@@ -390,18 +423,36 @@
     <script>
         let selectedUserId = null;
         let messageCache = {};
+        let isMobile = window.innerWidth <= 768;
 
-        function selectUser(userId, username) {
+        // Открыть чат (телефон + ПК)
+        function openChat(userId, username) {
             selectedUserId = userId;
             document.getElementById('chat-header').textContent = username;
             document.getElementById('message-input').disabled = false;
             document.getElementById('send-btn').disabled = false;
             document.getElementById('message-input').focus();
-            
+
+            // Подсветка контакта
             document.querySelectorAll('.user-item').forEach(el => el.classList.remove('active-user'));
-            event.target.closest('.user-item').classList.add('active-user');
-            
+            const items = document.querySelectorAll('.user-item');
+            for (let item of items) {
+                if (item.textContent.trim() === username) {
+                    item.classList.add('active-user');
+                }
+            }
+
+            // Телефон: показываем чат на весь экран
+            if (isMobile) {
+                document.getElementById('chatView').classList.add('active');
+            }
+
             loadMessages(userId);
+        }
+
+        // Закрыть чат (только телефон)
+        function closeChat() {
+            document.getElementById('chatView').classList.remove('active');
         }
 
         function loadMessages(userId) {
@@ -409,30 +460,21 @@
                 .then(response => response.json())
                 .then(messages => {
                     const container = document.getElementById('chat-messages');
-                    
                     const cacheKey = JSON.stringify(messages);
                     if (messageCache[userId] === cacheKey) return;
                     messageCache[userId] = cacheKey;
-                    
+
                     container.innerHTML = '';
-                    
                     if (messages.length === 0) {
-                        container.innerHTML = `
-                            <div class="empty-state">
-                                <div class="icon">💭</div>
-                                <span>Нет сообщений</span>
-                            </div>
-                        `;
+                        container.innerHTML = `<div class="empty-state"><div class="icon">💭</div><span>Нет сообщений</span></div>`;
                         return;
                     }
-                    
                     messages.forEach(msg => {
                         const div = document.createElement('div');
                         div.className = 'message ' + (msg.sender === {{ user.id }} ? 'sent' : 'received');
                         div.innerHTML = msg.content + '<span class="time">' + msg.timestamp + '</span>';
                         container.appendChild(div);
                     });
-                    
                     container.scrollTop = container.scrollHeight;
                 });
         }
@@ -442,17 +484,15 @@
             const input = document.getElementById('message-input');
             const content = input.value.trim();
             if (!content) return;
-            
+
             const formData = new FormData();
             formData.append('receiver_id', selectedUserId);
             formData.append('content', content);
-            
+
             fetch('/send_message/', {
                 method: 'POST',
                 body: formData,
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}'
-                }
+                headers: { 'X-CSRFToken': '{{ csrf_token }}' }
             })
             .then(response => response.json())
             .then(data => {
@@ -464,14 +504,24 @@
             });
         }
 
+        // Обработчики
         document.getElementById('send-btn').addEventListener('click', sendMessage);
         document.getElementById('message-input').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') sendMessage();
         });
 
+        // Обновление сообщений
         setInterval(() => {
             if (selectedUserId) loadMessages(selectedUserId);
         }, 3000);
+
+        // Отслеживаем изменение размера окна (для переключения режимов)
+        window.addEventListener('resize', function() {
+            isMobile = window.innerWidth <= 768;
+            if (!isMobile) {
+                document.getElementById('chatView').classList.remove('active');
+            }
+        });
     </script>
 </body>
 </html>
