@@ -65,11 +65,11 @@
         .top-bar .user-info strong { color: rgba(255,255,255,0.8); font-weight: 400; }
         .top-bar .user-info:hover strong { color: #fff; }
 
-        /* БУРГЕР-МЕНЮ — СУПЕР-ПОВЕРХ ВСЕГО */
+        /* БУРГЕР-МЕНЮ — position: fixed, поверх всего */
         .user-menu {
-            position: absolute;
-            top: 60px;
-            right: 10px;
+            position: fixed !important;
+            top: 80px;
+            right: 30px;
             background: rgba(255,255,255,0.06);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
@@ -327,9 +327,9 @@
         }
         .mobile-back:active { transform: scale(0.9); }
 
-        /* МЕНЮ УДАЛЕНИЯ — СУПЕР-ПОВЕРХ ВСЕГО */
+        /* МЕНЮ УДАЛЕНИЯ — position: fixed, поверх всего */
         .delete-popup {
-            position: fixed;
+            position: fixed !important;
             bottom: 120px;
             left: 50%;
             transform: translateX(-50%);
@@ -440,8 +440,8 @@
             }
             .top-bar .user-info { font-size: 12px; }
             .user-menu {
-                top: 55px;
-                right: 10px;
+                top: 80px;
+                right: 20px;
                 min-width: 120px;
             }
             .delete-popup {
@@ -501,11 +501,7 @@
                     <strong>{{ user.username }}</strong>
                 </span>
             </div>
-            <div class="user-menu" id="userMenu" style="display: none;">
-                <div class="menu-item" onclick="menuAction('profile')">Профиль</div>
-                <div class="menu-item" onclick="menuAction('settings')">Настройки</div>
-                <div class="menu-item logout-item" onclick="menuAction('logout')">Выйти</div>
-            </div>
+            <!-- БУРГЕР-МЕНЮ ТЕПЕРЬ ВНЕ .top-bar, ПОЭТОМУ ОН НЕ ЗАВИСИТ ОТ НЕГО -->
         </div>
 
         <div class="row" style="height: calc(100% - 80px);">
@@ -549,6 +545,13 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- БУРГЕР-МЕНЮ ВЫНЕСЕН ЗА ПРЕДЕЛЫ .chat-container, ЧТОБЫ НЕ ЗАВИСЕТЬ ОТ НЕГО -->
+    <div class="user-menu" id="userMenu" style="display: none;">
+        <div class="menu-item" onclick="menuAction('profile')">Профиль</div>
+        <div class="menu-item" onclick="menuAction('settings')">Настройки</div>
+        <div class="menu-item logout-item" onclick="menuAction('logout')">Выйти</div>
     </div>
 
     <div class="delete-popup" id="deletePopup">
