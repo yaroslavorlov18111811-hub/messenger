@@ -7,6 +7,7 @@ class Message(models.Model):
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)  # Мягкое удаление
 
     def __str__(self):
         return f'{self.sender} -> {self.receiver}: {self.content[:20]}'
