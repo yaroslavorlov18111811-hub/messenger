@@ -65,7 +65,7 @@
         .top-bar .user-info strong { color: rgba(255,255,255,0.8); font-weight: 400; }
         .top-bar .user-info:hover strong { color: #fff; }
 
-        /* БУРГЕР-МЕНЮ — ПОЛНОСТЬЮ ПРОЗРАЧНЫЙ */
+        /* БУРГЕР-МЕНЮ — СУПЕР-ПОВЕРХ ВСЕГО */
         .user-menu {
             position: absolute;
             top: 60px;
@@ -79,7 +79,7 @@
             min-width: 140px;
             max-width: 160px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-            z-index: 9999;
+            z-index: 9999999999 !important;
             animation: menuSlide 0.15s ease;
             display: none;
         }
@@ -327,7 +327,7 @@
         }
         .mobile-back:active { transform: scale(0.9); }
 
-        /* МЕНЮ УДАЛЕНИЯ — ПОЛНОСТЬЮ ПРОЗРАЧНОЕ, КНОПКИ БОЛЬШЕ */
+        /* МЕНЮ УДАЛЕНИЯ — СУПЕР-ПОВЕРХ ВСЕГО */
         .delete-popup {
             position: fixed;
             bottom: 120px;
@@ -339,7 +339,7 @@
             border: 1px solid rgba(255,255,255,0.06);
             border-radius: 14px;
             padding: 12px 24px;
-            z-index: 9999;
+            z-index: 9999999999 !important;
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
             animation: popupIn 0.15s ease;
             display: none;
