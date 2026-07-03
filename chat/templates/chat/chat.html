@@ -65,10 +65,10 @@
         .top-bar .user-info strong { color: rgba(255,255,255,0.8); font-weight: 400; }
         .top-bar .user-info:hover strong { color: #fff; }
 
-        /* БУРГЕР-МЕНЮ — МАЛЕНЬКИЙ, НЕ ПЕРЕКРЫВАЕТ */
+        /* БУРГЕР-МЕНЮ — МАЛЕНЬКИЙ, ПЕРЕКРЫВАЕТ ЧАТ (z-index 9999) */
         .user-menu {
             position: absolute;
-            top: 60px;
+            top: 55px;
             right: 10px;
             background: rgba(255,255,255,0.06);
             backdrop-filter: blur(12px);
@@ -437,7 +437,7 @@
             }
             .top-bar .user-info { font-size: 12px; }
             .user-menu {
-                top: 55px;
+                top: 50px;
                 right: 10px;
             }
             .delete-popup {
