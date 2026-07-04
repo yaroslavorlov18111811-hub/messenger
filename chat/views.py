@@ -1,8 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.http import JsonResponse
+from django.contrib import messages
+import json
 from .models import Message
+
+User = get_user_model()
 
 @login_required
 def chat_page(request):
@@ -25,19 +29,16 @@ def chat_page(request):
 def get_messages(request, user_id):
     try:
         receiver = User.objects.get(id=user_id)
-
-        # Помечаем все сообщения от этого пользователя как прочитанные
         Message.objects.filter(
             sender=receiver,
             receiver=request.user,
             is_read=False
         ).update(is_read=True)
 
-        # Показываем ТОЛЬКО НЕ УДАЛЁННЫЕ сообщения
         messages = Message.objects.filter(
             sender__in=[request.user, receiver],
             receiver__in=[request.user, receiver],
-            is_deleted=False  # ← ЭТО ВАЖНО!
+            is_deleted=False
         ).order_by('timestamp')
 
         messages_data = [{
@@ -82,3 +83,45 @@ def delete_message(request, message_id):
         return JsonResponse({'status': 'ok'})
     except Message.DoesNotExist:
         return JsonResponse({'error': 'Сообщение не найдено'}, status=404)
+
+@login_required
+def moderator_panel(request):
+    if not request.user.is_moderator:
+        return redirect('chat_page')
+    
+    users = User.objects.all()
+    messages_list = Message.objects.all().order_by('-timestamp')[:50]
+    
+    return render(request, 'chat/moderator_panel.html', {
+        'users': users,
+        'messages': messages_list,
+        'total_users': users.count(),
+        'total_messages': Message.objects.count(),
+    })
+
+@login_required
+def toggle_block(request, user_id):
+    if not request.user.is_moderator:
+        return JsonResponse({'error': 'Access denied'}, status=403)
+    
+    try:
+        user = User.objects.get(id=user_id)
+        data = json.loads(request.body)
+        user.is_blocked = data.get('block', False)
+        user.save()
+        return JsonResponse({'status': 'ok'})
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+
+@login_required
+def moderator_delete_message(request, message_id):
+    if not request.user.is_moderator:
+        return JsonResponse({'error': 'Access denied'}, status=403)
+    
+    try:
+        message = Message.objects.get(id=message_id)
+        message.is_deleted = True
+        message.save()
+        return JsonResponse({'status': 'ok'})
+    except Message.DoesNotExist:
+        return JsonResponse({'error': 'Message not found'}, status=404)
