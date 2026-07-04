@@ -78,3 +78,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'chat_page'
 LOGOUT_REDIRECT_URL = 'login'
+AUTH_USER_MODEL = 'users.User'
+
+import sys
+import os
+
+if 'migrate' not in sys.argv and 'makemigrations' not in sys.argv:
+    try:
+        from django.db import connection
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1 FROM users_user LIMIT 1")
+    except Exception:
+        os.system('python manage.py migrate')
