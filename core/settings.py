@@ -90,3 +90,15 @@ if 'migrate' not in sys.argv and 'makemigrations' not in sys.argv:
             cursor.execute("SELECT 1 FROM users_user LIMIT 1")
     except Exception:
         os.system('python manage.py migrate')
+
+# Автоматическое применение миграций при запуске
+import sys
+import os
+
+if 'migrate' not in sys.argv and 'makemigrations' not in sys.argv:
+    try:
+        from django.db import connection
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1 FROM users_user LIMIT 1")
+    except Exception:
+        os.system('python manage.py migrate')
