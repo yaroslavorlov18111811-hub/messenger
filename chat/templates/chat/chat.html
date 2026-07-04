@@ -64,8 +64,13 @@
         .top-bar .user-info { color: rgba(255,255,255,0.5); font-weight: 300; font-size: 13px; cursor: pointer; }
         .top-bar .user-info strong { color: rgba(255,255,255,0.8); font-weight: 400; }
         .top-bar .user-info:hover strong { color: #fff; }
+        .moderator-badge {
+            color: #ffcc00;
+            font-size: 14px;
+            margin-left: 4px;
+        }
 
-        /* БУРГЕР-МЕНЮ — position: fixed, поверх всего */
+        /* БУРГЕР-МЕНЮ */
         .user-menu {
             position: fixed !important;
             top: 80px;
@@ -327,7 +332,7 @@
         }
         .mobile-back:active { transform: scale(0.9); }
 
-        /* МЕНЮ УДАЛЕНИЯ — position: fixed, поверх всего */
+        /* МЕНЮ УДАЛЕНИЯ */
         .delete-popup {
             position: fixed !important;
             bottom: 120px;
@@ -499,9 +504,11 @@
             <div style="display: flex; align-items: center; gap: 16px;">
                 <span class="user-info" onclick="toggleMenu()">
                     <strong>{{ user.username }}</strong>
+                    {% if user.is_moderator %}
+                        <span class="moderator-badge">🛡️</span>
+                    {% endif %}
                 </span>
             </div>
-            <!-- БУРГЕР-МЕНЮ ТЕПЕРЬ ВНЕ .top-bar, ПОЭТОМУ ОН НЕ ЗАВИСИТ ОТ НЕГО -->
         </div>
 
         <div class="row" style="height: calc(100% - 80px);">
@@ -547,10 +554,13 @@
         </div>
     </div>
 
-    <!-- БУРГЕР-МЕНЮ ВЫНЕСЕН ЗА ПРЕДЕЛЫ .chat-container, ЧТОБЫ НЕ ЗАВИСЕТЬ ОТ НЕГО -->
+    <!-- БУРГЕР-МЕНЮ (вынесен наружу) -->
     <div class="user-menu" id="userMenu" style="display: none;">
         <div class="menu-item" onclick="menuAction('profile')">Профиль</div>
         <div class="menu-item" onclick="menuAction('settings')">Настройки</div>
+        {% if user.is_moderator %}
+            <div class="menu-item" onclick="menuAction('moderator')">Панель модератора</div>
+        {% endif %}
         <div class="menu-item logout-item" onclick="menuAction('logout')">Выйти</div>
     </div>
 
@@ -577,6 +587,8 @@
                 alert('Профиль — скоро будет!');
             } else if (action === 'settings') {
                 alert('Настройки — в разработке');
+            } else if (action === 'moderator') {
+                window.location.href = "{% url 'moderator_panel' %}";
             }
             document.getElementById('userMenu').style.display = 'none';
         }
